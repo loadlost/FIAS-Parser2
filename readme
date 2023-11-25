@@ -1,0 +1,8 @@
+FIAS-Parser
+Инструмент для парсинга данных с портала [ФИАС](https://fias.nalog.ru/).
+#### Используемые библиотеки
+- json
+- requests
+- prettytable
+
+loadlost@gmail.com
