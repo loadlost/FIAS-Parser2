@@ -16,25 +16,25 @@ common_headers = {
 }
 
 url_requests = {
-    'first': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
-              '{"address_level":1}'),
+    'region': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
+               '{"address_level":1}'),
 
-    'second': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
-               '{"address_levels":[3],'
+    'district': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
+                 '{"address_levels":[3],'
+                 '"address_type":2,'
+                 '"path":"region_object_id"}'),
+
+    'street': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
+               '{"address_levels":[8],'
                '"address_type":2,'
-               '"path":"region_object_id"}'),
+               '"path":"region_object_id.district_object_id"}'),
 
-    'third': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
-              '{"address_levels":[8],'
+    'house': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
+              '{"address_levels":[10],'
               '"address_type":2,'
-              '"path":"region_object_id.district_object_id"}'),
+              '"path":"region_object_id.district_object_id.street_object_id"}'),
 
-    'fourth': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
-               '{"address_levels":[10],'
-               '"address_type":2,'
-               '"path":"region_object_id.district_object_id.street_object_id"}'),
-
-    'fifth': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
-              '{"address_level":11,'
-              '"path":"region_object_id.district_object_id.street_object_id.house_object_id"}')
+    'search': ('https://fias-public-service.nalog.ru/api/spas/v2.0/GetAddressItems',
+               '{"address_level":11,'
+               '"path":"region_object_id.district_object_id.street_object_id.house_object_id"}')
 }
