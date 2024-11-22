@@ -24,8 +24,8 @@ def get_object_id_by_name(response_text: str, name: str, level: int) -> str or N
         response_data: dict = json.loads(response_text)
         addresses: list = response_data.get('addresses', [])
 
-        best_match_id: str | None = None # Идентификатор с наилучшим совпадением
-        best_match_ratio: float = 0 # Степень совпадения
+        best_match_id: str | None = None  # Идентификатор с наилучшим совпадением
+        best_match_ratio: float = 0  # Степень совпадения
 
         # Проход по всем объектам в "addresses" и поиск совпадений на указанном уровне
         for address in addresses:
@@ -67,7 +67,7 @@ def extract_address_info(address: dict, object_type_filter: str = 'all') -> dict
     :rtype: dict or None
     """
     logger.info('Extracting address info')
-    address_details: dict = address.get("address_details", {}) # Тут берём кадастровый номер
+    address_details: dict = address.get("address_details", {})  # Тут берём кадастровый номер
     hierarchy: list = address.get("hierarchy", [])  # Тут берём куски адреса и тип объекта
 
     # Применение фильтра по типу объекта
@@ -81,7 +81,6 @@ def extract_address_info(address: dict, object_type_filter: str = 'all') -> dict
         logger.info(f'Object {address_details.get("cadastral_number", "")} has type {address_type} '
                     f'does not match the filter {object_type_filter}')
         return None
-
 
     # Извлечение информации кадастрового номера
     cadastral_number: str = address_details.get("cadastral_number", "")
@@ -114,7 +113,7 @@ def extract_address_info(address: dict, object_type_filter: str = 'all') -> dict
     }
 
 
-def parse_json_to_dataframe(json_data: dict, object_type_filter: str='all'):
+def parse_json_to_dataframe(json_data: dict, object_type_filter: str = 'Помещение'):
     """
     Преобразует JSON-данные в DataFrame и сохраняет в Excel-файл.
     Формирует имя файла из адреса, очищает недопустимые символы и сохраняет в папку "output".
@@ -135,7 +134,6 @@ def parse_json_to_dataframe(json_data: dict, object_type_filter: str='all'):
 
     # Проход по списку словарей и извлечение информации
     for address in json_data.get("addresses", []):
-
 
         # Извлекаем информацию о конкретном помещении
         info: dict = extract_address_info(address, object_type_filter)
@@ -169,7 +167,7 @@ def parse_json_to_dataframe(json_data: dict, object_type_filter: str='all'):
     df.to_excel(f"output/{file_name}.xlsx", index=False)
 
 
-def create_search_result_table(search_result_data: dict, object_type_filter: str='Помещение') -> PrettyTable:
+def create_search_result_table(search_result_data: dict, object_type_filter: str = 'Помещение') -> PrettyTable:
     """
     Создаёт таблицу с результатами поиска и выводит ее в консоль.
     object_type_filter может принимать значения 'Помещение', 'Квартира', 'all'.
@@ -192,7 +190,7 @@ def create_search_result_table(search_result_data: dict, object_type_filter: str
 
     # Устанавливаем выравнивание по левому краю
     search_result_table.align = 'l'
-    info: dict | None= None
+
     for address in search_result_data.get("addresses", []):
 
         # Извлекаем информацию о конкретном помещении
@@ -201,9 +199,8 @@ def create_search_result_table(search_result_data: dict, object_type_filter: str
             # Добавляем информацию в таблицу
             search_result_table.add_row([info["Кадастровый номер"], info["Адрес"], info["Тип"]])
 
-    if info is None:
+    if search_result_table.rowcount == 0:
         logger.error('All objects did not pass the filter, change the filter in create_search_result_table.')
         return None
     else:
         print(search_result_table)
-

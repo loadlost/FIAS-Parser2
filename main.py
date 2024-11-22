@@ -49,13 +49,12 @@ def get_session() -> requests.Session:
 
 def get_token(session: requests.Session) -> None:
     """
-    Функция для получения токена. Инициализирует последовательность запросов get_token_sequence и передаёт их в функцию send_requests.
+    Функция для получения токена. Инициализирует последовательность запросов get_token_sequence и передаёт их в
+    функцию send_requests.
 
-    :param session: Активная сессия для выполнения запроса.
-    :type session: requests.Session
-    :return: None
-    :rtype: None
-    :raises requests.exceptions.RequestException: Возникает при неудачном выполнении одного из запросов из get_token_sequence
+    :param session: Активная сессия для выполнения запроса. :type session: requests.Session :return: None :rtype:
+    None :raises requests.exceptions.RequestException: Возникает при неудачном выполнении одного из запросов из
+    get_token_sequence
     """
 
     logger.info('Token request started')
@@ -80,13 +79,11 @@ def search_objects(session: requests.Session, task_list: List[List[str]]) -> Non
     """
     Функция для поиска. Отправляет запрос используя метод execute класса RequestConfig.
 
-    :param task_list: Список задач, где каждая задача представлена списком строк.
-    :type task_list: list
-    :param session: Активная сессия для выполнения запроса.
-    :type session: requests.Session
-    :return: None
-    :rtype: None
-    :raises requests.exceptions.RequestException: Возникает при неудачном выполнении одного из запросов из search_sequence
+    :param task_list: Список задач, где каждая задача представлена списком строк. :type task_list: list :param
+    :param session: Активная сессия для выполнения запроса. :type session: requests.Session :return: None :rtype: None
+    :raises requests.exceptions.RequestException: Возникает при неудачном выполнении одного из запросов из
+    search_sequence
+
     """
 
     logger.info('Search process started')
@@ -130,7 +127,8 @@ def send_requests(session: requests.Session, request_list: List[RequestConfig], 
 
     for request_config in request_list:
         try:
-            # Выполняем запрос используя параметры запросов из объектов класса RequestConfig и метод RequestConfig.execute
+            # Выполняем запрос используя параметры запросов из объектов класса RequestConfig и метод
+            # RequestConfig.execute
             response: requests.Response = request_config.execute(session)
             # Проверяем наличие URL в конфигурации запроса. Используется в логах.
             url: str = request_config.url if hasattr(request_config, 'url') else 'Unknown URL'
@@ -168,7 +166,7 @@ def read_tasks() -> List[List[str]] | None:
     tasks: List[List[str]] = []
     try:
         with open('tasks.txt', 'r', encoding='utf-8') as file:
-            for line in file: # Читаем каждую строку
+            for line in file:  # Читаем каждую строку
                 # Разбиваем строку на элементы, разделитель - запятая
                 task: List[str] = [element.strip() for element in line.strip().split(',')]
                 tasks.append(task)
@@ -195,20 +193,20 @@ def main() -> None:
         if key == b'\x1b':  # Если нажата клавиша Escape, то пользователь может ввести адрес вручную
             tasks: List[List[str]] = []
             user_input: str = input("Введите адрес: ")
-            if user_input == '': # Если ввод пустой строки, возвращаемся к началу цикла.
+            if user_input == '':  # Если ввод пустой строки, возвращаемся к началу цикла.
                 logger.error("Input is empty.")
                 continue
 
             # Разбиваем строку на элементы, разделитель - запятая
             task = [element.strip() for element in user_input.strip().split(',')]
-            tasks.append(task) # Добавляем задачу в список задач
-            start(tasks) # Запускаем обработку задач
-        else: # Если нажата какая-то другая клавиша, то обрабатываем задачи из файла
-            tasks: List[List[str]] = read_tasks() # Читаем задачи из файла
-            if tasks is None: # Если список задач пустой, возвращаемся к началу цикла.
+            tasks.append(task)  # Добавляем задачу в список задач
+            start(tasks)  # Запускаем обработку задач
+        else:  # Если нажата какая-то другая клавиша, то обрабатываем задачи из файла
+            tasks: List[List[str]] = read_tasks()  # Читаем задачи из файла
+            if tasks is None:  # Если список задач пустой, возвращаемся к началу цикла.
                 continue
             else:
-                start(tasks) # Запускаем обработку задач
+                start(tasks)  # Запускаем обработку задач
 
 
 def start(tasks: List[List[str]]) -> None:
@@ -219,9 +217,9 @@ def start(tasks: List[List[str]]) -> None:
     :return: None
     """
 
-    session = get_session() # Получаем активную сессию
-    get_token(session) # Получаем токен
-    search_objects(session, tasks) # Обрабатываем задачи
+    session = get_session()  # Получаем активную сессию
+    get_token(session)  # Получаем токен
+    search_objects(session, tasks)  # Обрабатываем задачи
 
 
 if __name__ == '__main__':
